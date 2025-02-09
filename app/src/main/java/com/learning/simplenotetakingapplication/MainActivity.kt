@@ -9,13 +9,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +33,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             SimpleNoteTakingApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()){innerPadding->
-                    TextArea(modifier=Modifier.padding(innerPadding))
+                    val existingNote=Note(0,"")
+                    NoteScreen(existingNote,modifier=Modifier.padding(innerPadding))
                 }
             }
         }
@@ -40,14 +42,21 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TextArea(modifier:Modifier=Modifier){
-    var text by remember{mutableStateOf("")}
+fun NoteScreen(previousNote:Note,modifier:Modifier=Modifier){
+    var text by rememberSaveable{mutableStateOf(previousNote.content)}
+    NoteText(text=text,onTextChange={text=it},modifier)
+}
 
+@Composable
+fun NoteText(text:String,onTextChange:(String)->Unit,modifier:Modifier=Modifier){
     Column(horizontalAlignment=Alignment.CenterHorizontally,modifier=modifier){
         Text("Enter Note",fontWeight=FontWeight.Bold,fontSize=20.sp)
-        TextField(value=text,onValueChange={text=it},modifier=Modifier.fillMaxWidth().padding(10.dp))
+        TextField(value=text,onValueChange=onTextChange,modifier=Modifier.fillMaxWidth().padding(10.dp))
+        Button(modifier=Modifier.padding(10.dp),onClick={}){Text("Save")}
     }
 }
+
+// Preview Area Android Compose
 
 @Preview(name="LightMode",showBackground = true)
 @Preview(name="DarkMode",uiMode= Configuration.UI_MODE_NIGHT_YES,showBackground=true)
@@ -61,7 +70,7 @@ annotation class FullAreaPreview
 @Composable
 fun GreetingPreview() {
     SimpleNoteTakingApplicationTheme {
-        TextArea()
+        NoteScreen(Note(0,""))
     }
 }
 
@@ -70,7 +79,7 @@ fun GreetingPreview() {
 fun FullNotePreview() {
     SimpleNoteTakingApplicationTheme {
         Scaffold(modifier = Modifier.fillMaxSize()){innerPadding->
-            TextArea(modifier=Modifier.padding(innerPadding))
+            NoteScreen(Note(0,""),modifier=Modifier.padding(innerPadding))
         }
     }
 }
