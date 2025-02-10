@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SimpleNoteTakingApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()){innerPadding->
-                    val existingNote=Note(0,"")
+                    val existingNote=Note("")
                     NoteScreen(existingNote,modifier=Modifier.padding(innerPadding))
                 }
             }
@@ -70,7 +70,7 @@ annotation class FullAreaPreview
 @Composable
 fun GreetingPreview() {
     SimpleNoteTakingApplicationTheme {
-        NoteScreen(Note(0,""))
+        NoteScreen(Note(""))
     }
 }
 
@@ -79,7 +79,7 @@ fun GreetingPreview() {
 fun FullNotePreview() {
     SimpleNoteTakingApplicationTheme {
         Scaffold(modifier = Modifier.fillMaxSize()){innerPadding->
-            NoteScreen(Note(0,""),modifier=Modifier.padding(innerPadding))
+            NoteScreen(Note(""),modifier=Modifier.padding(innerPadding))
         }
     }
 }
