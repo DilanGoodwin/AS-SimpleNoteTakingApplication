@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,8 +58,8 @@ fun NoteScreen(state:NoteState,onEvent:(NoteEvent)->Unit,modifier:Modifier=Modif
     }
 
     Column(horizontalAlignment=Alignment.CenterHorizontally,modifier=modifier){
-        Text("Enter Note",fontWeight=FontWeight.Bold,fontSize=20.sp)
+        Text(stringResource(R.string.enterNote),fontWeight=FontWeight.Bold,fontSize=20.sp)
         TextField(value=state.content,onValueChange={onEvent(NoteEvent.SetNoteContent(it))},modifier=Modifier.fillMaxWidth().padding(10.dp))
-        Button(modifier=Modifier.padding(10.dp),onClick={onEvent(NoteEvent.SaveNote)}){Text("Save")}
+        Button(modifier=Modifier.padding(10.dp),onClick={onEvent(NoteEvent.SaveNote)}){Text(stringResource(R.string.save))}
     }
 }

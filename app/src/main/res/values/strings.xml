@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SimpleNoteTakingApplication</string>
+    <string name="enterNote">Enter Note</string>
+    <string name="save">Save</string>
 </resources>
