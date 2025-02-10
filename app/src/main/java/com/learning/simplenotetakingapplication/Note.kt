@@ -9,4 +9,4 @@ import androidx.room.PrimaryKey
  * @param uid
  */
 @Entity
-data class Note(val content:String,@PrimaryKey(autoGenerate=true)val uid:Int=0){}
+data class Note(val content:String="",@PrimaryKey(autoGenerate=false)val uid:Int=0){}
