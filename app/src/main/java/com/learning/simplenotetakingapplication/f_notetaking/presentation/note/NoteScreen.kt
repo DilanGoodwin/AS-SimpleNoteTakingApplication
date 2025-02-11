@@ -50,3 +50,9 @@ fun NoteScreen(state:NoteState, onEvent:(NoteEvent)->Unit, modifier: Modifier = 
         }
     }
 }
+
+@Preview
+@Composable
+fun ViewNote(){
+    NoteScreen(state=NoteState(),onEvent={})
+}
