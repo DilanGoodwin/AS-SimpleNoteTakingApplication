@@ -1,4 +1,4 @@
-package com.learning.simplenotetakingapplication
+package com.learning.simplenotetakingapplication.f_notetaking.domain
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
