@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.learning.simplenotetakingapplication.f_notetaking.data.data_source.NoteDB
 import com.learning.simplenotetakingapplication.f_notetaking.presentation.note.NoteScreen
+import com.learning.simplenotetakingapplication.f_notetaking.presentation.note.NoteViewModel
 import com.learning.simplenotetakingapplication.ui.theme.SimpleNoteTakingApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +21,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             SimpleNoteTakingApplicationTheme {
                 Scaffold(modifier=Modifier.fillMaxSize()){innerPadding->
-                    NoteScreen(modifier=Modifier.padding(innerPadding))
+                    val viewModel=NoteViewModel(dao=NoteDB.getInstance(applicationContext).dao)
+                    NoteScreen(viewModel=viewModel,modifier=Modifier.padding(innerPadding))
                 }
             }
         }
