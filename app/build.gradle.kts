@@ -64,4 +64,11 @@ dependencies {
 
     // Compose Testing
     debugImplementation(libs.ui.test.manifest)
+
+    // Glance Widget
+    implementation(libs.androidx.glance.material3)
+    implementation(libs.androidx.glance)
+    implementation(libs.androidx.glance.preview)
+    implementation(libs.androidx.glance.appwidget.preview)
+    implementation(libs.androidx.glance.appwidget)
 }
