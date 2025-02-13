@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.learning.simplenotetakingapplication.f_notetaking.domain.Note
+import com.learning.simplenotetakingapplication.f_notetaking.domain.model.Note
 
 /**
  * NoteDB

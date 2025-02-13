@@ -1,6 +1,6 @@
 package com.learning.simplenotetakingapplication.f_notetaking.presentation.note
 
-import com.learning.simplenotetakingapplication.f_notetaking.domain.Note
+import com.learning.simplenotetakingapplication.f_notetaking.domain.model.Note
 
 /**
  * NoteState

@@ -3,12 +3,17 @@ package com.learning.simplenotetakingapplication.f_view_note_widget.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.glance.GlanceModifier
+import androidx.glance.GlanceTheme
 import androidx.glance.appwidget.components.Scaffold
-import androidx.glance.appwidget.components.TitleBar
+import androidx.glance.layout.Alignment
+import androidx.glance.layout.Box
+import androidx.glance.layout.fillMaxSize
 import androidx.glance.preview.ExperimentalGlancePreviewApi
 import androidx.glance.preview.Preview
 import androidx.glance.text.Text
-import com.learning.simplenotetakingapplication.f_notetaking.domain.NoteEvent
+import androidx.glance.text.TextStyle
+import com.learning.simplenotetakingapplication.f_notetaking.presentation.note.NoteEvent
 import com.learning.simplenotetakingapplication.f_notetaking.presentation.note.NoteViewModel
 
 // Stateful
@@ -27,7 +32,12 @@ fun NoteWidgetView(viewModel:NoteViewModel){
 // Stateless
 @Composable
 fun NoteWidgetView(noteValue:String){
-    Text(noteValue)
+    Scaffold(backgroundColor=GlanceTheme.colors.widgetBackground,modifier=GlanceModifier.fillMaxSize())
+    {
+        Box(modifier=GlanceModifier.fillMaxSize(),contentAlignment=Alignment.Center){
+            Text(text=noteValue,style=TextStyle(color=GlanceTheme.colors.onSurface))
+        }
+    }
 }
 
 @OptIn(ExperimentalGlancePreviewApi::class)
