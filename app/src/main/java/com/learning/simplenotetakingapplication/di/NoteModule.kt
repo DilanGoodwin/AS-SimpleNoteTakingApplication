@@ -9,7 +9,7 @@ import com.learning.simplenotetakingapplication.f_notetaking.domain.use_case.Not
 import com.learning.simplenotetakingapplication.f_notetaking.domain.use_case.UpsertNote
 
 /**
- *
+ * NoteModule
  */
 interface NoteModule{
     val notesDB:NoteDB
@@ -17,6 +17,13 @@ interface NoteModule{
     val noteUseCases:NoteUseCases
 }
 
+/**
+ * NoteModuleImplementation
+ *
+ * Creation of the information needed to pull data from notes database
+ *
+ * @param context Application context
+ */
 class NoteModuleImplementation(context:Context):NoteModule{
     override val notesDB:NoteDB=NoteDB.getInstance(context)
     override val noteRepository:NoteRepository by lazy{NoteRepositoryImplementation(notesDB.dao)}

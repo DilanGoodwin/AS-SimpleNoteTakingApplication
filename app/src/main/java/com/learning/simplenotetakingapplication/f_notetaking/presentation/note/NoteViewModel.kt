@@ -21,6 +21,13 @@ class NoteViewModel(private val noteUseCases:NoteUseCases):ViewModel(){
     val state=combine(_state,_notes){state,notes->
         state.copy(notes=notes)}.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),NoteState())
 
+    /**
+     * onEvent
+     *
+     * When event triggered by view match that to the corresponding response
+     *
+     * @param event Sealed interface object call
+     */
     fun onEvent(event:NoteEvent){
         when(event){
             NoteEvent.InitialLoad->_state.update{it.copy(initialRun=false)}

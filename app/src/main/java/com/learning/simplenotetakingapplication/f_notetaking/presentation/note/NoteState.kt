@@ -11,4 +11,4 @@ import com.learning.simplenotetakingapplication.f_notetaking.domain.model.Note
  * @param content String value pulled from note that can be edited within the view
  * @param initialRun Has the application database been pulled from once?
  */
-data class NoteState(val notes:List<Note> = emptyList(), val content:String="", val initialRun:Boolean=true)
+data class NoteState(val notes:List<Note> = emptyList(),val content:String="",val initialRun:Boolean=true)
