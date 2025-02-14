@@ -13,17 +13,14 @@ import androidx.glance.preview.ExperimentalGlancePreviewApi
 import androidx.glance.preview.Preview
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import com.learning.simplenotetakingapplication.f_notetaking.presentation.note.NoteEvent
-import com.learning.simplenotetakingapplication.f_notetaking.presentation.note.NoteViewModel
 
 // Stateful
 @Composable
-fun NoteWidgetView(viewModel:NoteViewModel){
+fun NoteWidgetView(viewModel:NoteWidgetViewModel){
     val state by viewModel.state.collectAsState()
 
-    if(state.notes.isNotEmpty()&&state.initialRun){
-        viewModel.onEvent(NoteEvent.SetNoteContent(state.notes[0].content))
-        viewModel.onEvent(NoteEvent.InitialLoad)
+    if(state.notes.isNotEmpty()){
+        viewModel.onEvent(WidgetEvent.SetNoteContent(state.notes[0].content))
     }
 
     NoteWidgetView(noteValue=state.content)
