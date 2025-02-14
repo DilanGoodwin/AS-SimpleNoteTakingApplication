@@ -1,6 +1,5 @@
 package com.learning.simplenotetakingapplication.f_notetaking.presentation.note
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,10 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.learning.simplenotetakingapplication.R
+import com.learning.simplenotetakingapplication.core.presentation.ViewingSystemThemes
 
 
 /**
@@ -51,18 +50,14 @@ fun NoteScreen(viewModel:NoteViewModel,modifier:Modifier=Modifier){
  */
 @Composable
 fun NoteScreen(state:NoteState,onEvent:(NoteEvent)->Unit,modifier:Modifier=Modifier){
-    Column(horizontalAlignment= Alignment.CenterHorizontally,modifier=modifier){
-        Text(stringResource(R.string.enterNote),fontWeight= FontWeight.Bold,fontSize=20.sp)
+    Column(horizontalAlignment=Alignment.CenterHorizontally,modifier=modifier){
+        Text(stringResource(R.string.enterNote),fontWeight=FontWeight.Bold,fontSize=20.sp)
         TextField(value=state.content,onValueChange={onEvent(NoteEvent.SetNoteContent(it))},modifier=Modifier.fillMaxWidth().padding(10.dp))
         Button(modifier=Modifier.padding(10.dp),onClick={onEvent(NoteEvent.SaveNote)}){
             Text(stringResource(R.string.save))
         }
     }
 }
-
-@Preview(name="LightMode",showBackground=true,uiMode=Configuration.UI_MODE_NIGHT_NO)
-@Preview(name="DarkMode",showBackground=true,uiMode=Configuration.UI_MODE_NIGHT_YES)
-annotation class ViewingSystemThemes
 
 @ViewingSystemThemes
 @Composable
