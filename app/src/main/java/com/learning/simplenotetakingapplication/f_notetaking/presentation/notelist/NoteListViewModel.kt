@@ -26,8 +26,8 @@ class NoteListViewModel(private val noteUseCases: NoteUseCases) : ViewModel() {
     fun onEvent(event: NoteListEvent) {
         when (event) {
             NoteListEvent.SaveNote -> {}
-            NoteListEvent.ShowNewNotePopup -> _state.update { it.copy(showNewNotePopup = true) }
-            NoteListEvent.HideNewNotePopup -> _state.update { it.copy(showNewNotePopup = false) }
+            NoteListEvent.ShowNewNoteDialog -> _state.update { it.copy(showNewNotePopup = true) }
+            NoteListEvent.HideNewNoteDialog -> _state.update { it.copy(showNewNotePopup = false) }
             is NoteListEvent.SaveContent -> _state.update { it.copy(newNoteContent = event.content) }
         }
     }

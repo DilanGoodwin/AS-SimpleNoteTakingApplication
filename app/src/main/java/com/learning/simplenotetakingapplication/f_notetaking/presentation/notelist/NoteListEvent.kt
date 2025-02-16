@@ -3,6 +3,6 @@ package com.learning.simplenotetakingapplication.f_notetaking.presentation.notel
 interface NoteListEvent {
     data class SaveContent(val content: String) : NoteListEvent
     data object SaveNote : NoteListEvent
-    object ShowNewNotePopup : NoteListEvent
-    object HideNewNotePopup : NoteListEvent
+    object ShowNewNoteDialog : NoteListEvent
+    object HideNewNoteDialog : NoteListEvent
 }

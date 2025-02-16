@@ -29,8 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
+import androidx.compose.ui.window.Dialog
 import com.learning.simplenotetakingapplication.R
 import com.learning.simplenotetakingapplication.core.presentation.ViewingSystemThemes
 
@@ -54,7 +53,7 @@ fun ListNotes(viewModel: NoteListViewModel, modifier: Modifier = Modifier) {
     val state by viewModel.state.collectAsState()
 
     ListNotes(state = state, onEvent = viewModel::onEvent, modifier = modifier)
-    NewNote(showPopup = state.showNewNotePopup, onEvent = viewModel::onEvent)
+    NewNote(showDialog = state.showNewNotePopup, state.newNoteContent, onEvent = viewModel::onEvent)
 }
 
 // Stateless
@@ -68,7 +67,7 @@ fun ListNotes(
         floatingActionButton = {
             SmallFloatingActionButton(
                 modifier = Modifier.padding(5.dp),
-                onClick = { onEvent(NoteListEvent.ShowNewNotePopup) }) {
+                onClick = { onEvent(NoteListEvent.ShowNewNoteDialog) }) {
                 Icon(Icons.Filled.Add, "New Note Button")
             }
         },
@@ -96,24 +95,19 @@ fun ListNotes(
 }
 
 @Composable
-fun NewNote(showPopup: Boolean, onEvent: (NoteListEvent) -> Unit) {
-    if (showPopup) {
-        Popup(
-            alignment = Alignment.Center,
-            onDismissRequest = {
-                onEvent(NoteListEvent.SaveNote)
-                onEvent(NoteListEvent.HideNewNotePopup)
-            },
-            properties = PopupProperties(excludeFromSystemGesture = true)
-        ) {
+fun NewNote(showDialog: Boolean, savedContent: String, onEvent: (NoteListEvent) -> Unit) {
+    if (showDialog) {
+        Dialog(onDismissRequest = {
+            onEvent(NoteListEvent.SaveNote)
+            onEvent(NoteListEvent.HideNewNoteDialog)
+        }) {
             Box(
                 modifier = Modifier.clip(RoundedCornerShape(5.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 TextField(
-                    value = "",
+                    value = savedContent,
                     onValueChange = { onEvent(NoteListEvent.SaveContent(content = it)) },
-                    readOnly = false,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
@@ -138,5 +132,5 @@ fun ViewNoteList() {
 @Preview
 @Composable
 fun NewNotePreview() {
-    NewNote(showPopup = true, onEvent = {})
+    NewNote(showDialog = true, savedContent = "", onEvent = {})
 }
