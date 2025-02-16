@@ -16,16 +16,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.learning.simplenotetakingapplication.R
 import com.learning.simplenotetakingapplication.core.presentation.ViewingSystemThemes
 
@@ -48,15 +53,22 @@ fun Note(content: String, onClick: () -> Unit) {
 fun ListNotes(viewModel: NoteListViewModel, modifier: Modifier = Modifier) {
     val state by viewModel.state.collectAsState()
 
-    ListNotes(state = state, modifier = modifier)
+    ListNotes(state = state, onEvent = viewModel::onEvent, modifier = modifier)
+    NewNote(showPopup = state.showNewNotePopup, onEvent = viewModel::onEvent)
 }
 
 // Stateless
 @Composable
-fun ListNotes(state: NoteListState, modifier: Modifier = Modifier) {
+fun ListNotes(
+    state: NoteListState,
+    onEvent: (NoteListEvent) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         floatingActionButton = {
-            SmallFloatingActionButton(modifier = Modifier.padding(5.dp), onClick = {}) {
+            SmallFloatingActionButton(
+                modifier = Modifier.padding(5.dp),
+                onClick = { onEvent(NoteListEvent.ShowNewNotePopup) }) {
                 Icon(Icons.Filled.Add, "New Note Button")
             }
         },
@@ -83,6 +95,34 @@ fun ListNotes(state: NoteListState, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun NewNote(showPopup: Boolean, onEvent: (NoteListEvent) -> Unit) {
+    if (showPopup) {
+        Popup(
+            alignment = Alignment.Center,
+            onDismissRequest = {
+                onEvent(NoteListEvent.SaveNote)
+                onEvent(NoteListEvent.HideNewNotePopup)
+            },
+            properties = PopupProperties(excludeFromSystemGesture = true)
+        ) {
+            Box(
+                modifier = Modifier.clip(RoundedCornerShape(5.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                TextField(
+                    value = "",
+                    onValueChange = { onEvent(NoteListEvent.SaveContent(content = it)) },
+                    readOnly = false,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                )
+            }
+        }
+    }
+}
+
 @ViewingSystemThemes
 @Composable
 fun ViewNote() {
@@ -92,5 +132,11 @@ fun ViewNote() {
 @ViewingSystemThemes
 @Composable
 fun ViewNoteList() {
-    ListNotes(state = NoteListState(), modifier = Modifier)
+    ListNotes(state = NoteListState(), onEvent = {}, modifier = Modifier)
+}
+
+@Preview
+@Composable
+fun NewNotePreview() {
+    NewNote(showPopup = true, onEvent = {})
 }

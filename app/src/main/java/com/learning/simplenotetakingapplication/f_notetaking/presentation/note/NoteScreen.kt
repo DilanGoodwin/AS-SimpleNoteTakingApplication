@@ -28,15 +28,15 @@ import com.learning.simplenotetakingapplication.core.presentation.ViewingSystemT
  * @param modifier Passed modifier for setting padding values
  */
 @Composable
-fun NoteScreen(viewModel:NoteViewModel,modifier:Modifier=Modifier){
+fun NoteScreen(viewModel: NoteViewModel, modifier: Modifier = Modifier) {
     val state by viewModel.state.collectAsState()
 
-    if(state.notes.isNotEmpty()&&state.initialRun){
+    if (state.notes.isNotEmpty() && state.initialRun) {
         viewModel.onEvent(NoteEvent.SetNoteContent(state.notes[0].content))
         viewModel.onEvent(NoteEvent.InitialLoad)
     }
 
-    NoteScreen(state=state,onEvent=viewModel::onEvent,modifier=modifier)
+    NoteScreen(state = state, onEvent = viewModel::onEvent, modifier = modifier)
 }
 
 /**
@@ -49,11 +49,17 @@ fun NoteScreen(viewModel:NoteViewModel,modifier:Modifier=Modifier){
  * @param modifier Passed modifier directly passed to column
  */
 @Composable
-fun NoteScreen(state:NoteState,onEvent:(NoteEvent)->Unit,modifier:Modifier=Modifier){
-    Column(horizontalAlignment=Alignment.CenterHorizontally,modifier=modifier){
-        Text(stringResource(R.string.enterNote),fontWeight=FontWeight.Bold,fontSize=20.sp)
-        TextField(value=state.content,onValueChange={onEvent(NoteEvent.SetNoteContent(it))},modifier=Modifier.fillMaxWidth().padding(10.dp))
-        Button(modifier=Modifier.padding(10.dp),onClick={onEvent(NoteEvent.SaveNote)}){
+fun NoteScreen(state: NoteState, onEvent: (NoteEvent) -> Unit, modifier: Modifier = Modifier) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
+        Text(stringResource(R.string.enterNote), fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        TextField(
+            value = state.content,
+            onValueChange = { onEvent(NoteEvent.SetNoteContent(it)) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        )
+        Button(modifier = Modifier.padding(10.dp), onClick = { onEvent(NoteEvent.SaveNote) }) {
             Text(stringResource(R.string.save))
         }
     }
@@ -61,6 +67,6 @@ fun NoteScreen(state:NoteState,onEvent:(NoteEvent)->Unit,modifier:Modifier=Modif
 
 @ViewingSystemThemes
 @Composable
-fun ViewNote(){
-    NoteScreen(state=NoteState(),onEvent={})
+fun ViewNote() {
+    NoteScreen(state = NoteState(), onEvent = {})
 }

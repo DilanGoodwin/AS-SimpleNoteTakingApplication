@@ -1,3 +1,8 @@
 package com.learning.simplenotetakingapplication.f_notetaking.presentation.notelist
 
-interface NoteListEvent {}
+interface NoteListEvent {
+    data class SaveContent(val content: String) : NoteListEvent
+    data object SaveNote : NoteListEvent
+    object ShowNewNotePopup : NoteListEvent
+    object HideNewNotePopup : NoteListEvent
+}
