@@ -29,13 +29,18 @@ class NoteListViewModel(private val noteUseCases: NoteUseCases) : ViewModel() {
         when (event) {
             NoteListEvent.SaveNote -> {
                 if (_state.value.newNoteContent.isBlank()) return
-                viewModelScope.launch { noteUseCases.upsertNote(Note(_state.value.newNoteContent)) }
-                _state.update { it.copy(newNoteContent = "") }
+                _state.value.currentNote.content = _state.value.newNoteContent
+                viewModelScope.launch { noteUseCases.upsertNote(_state.value.currentNote) }
+                onEvent(NoteListEvent.SetNote(note = Note()))
             }
 
-            is NoteListEvent.ShowNewNoteDialog -> _state.update { it.copy(showNewNotePopup = true) }
-            is NoteListEvent.HideNewNoteDialog -> _state.update { it.copy(showNewNotePopup = false) }
-            is NoteListEvent.SaveContent -> _state.update { it.copy(newNoteContent = event.content) }
+            is NoteListEvent.ShowNoteDialog -> _state.update { it.copy(showNoteDialog = true) }
+            is NoteListEvent.HideNoteDialog -> _state.update { it.copy(showNoteDialog = false) }
+            is NoteListEvent.SetContent -> _state.update { it.copy(newNoteContent = event.content) }
+            is NoteListEvent.SetNote -> {
+                _state.update { it.copy(currentNote = event.note) }
+                onEvent(NoteListEvent.SetContent(content = event.note.content))
+            }
         }
     }
 }

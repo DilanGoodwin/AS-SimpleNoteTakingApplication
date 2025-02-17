@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun NewNote(showDialog: Boolean, savedContent: String, onEvent: (NoteListEvent) -> Unit) {
+fun NoteDialogWindow(showDialog: Boolean, savedContent: String, onEvent: (NoteListEvent) -> Unit) {
     if (showDialog) {
         Dialog(onDismissRequest = {
             onEvent(NoteListEvent.SaveNote)
-            onEvent(NoteListEvent.HideNewNoteDialog)
+            onEvent(NoteListEvent.HideNoteDialog)
         }) {
             Box(
                 modifier = Modifier.clip(RoundedCornerShape(5.dp)),
@@ -26,7 +26,7 @@ fun NewNote(showDialog: Boolean, savedContent: String, onEvent: (NoteListEvent) 
             ) {
                 TextField(
                     value = savedContent,
-                    onValueChange = { onEvent(NoteListEvent.SaveContent(content = it)) },
+                    onValueChange = { onEvent(NoteListEvent.SetContent(content = it)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
@@ -39,5 +39,5 @@ fun NewNote(showDialog: Boolean, savedContent: String, onEvent: (NoteListEvent) 
 @Preview
 @Composable
 fun NewNotePreview() {
-    NewNote(showDialog = true, savedContent = "", onEvent = {})
+    NoteDialogWindow(showDialog = true, savedContent = "", onEvent = {})
 }

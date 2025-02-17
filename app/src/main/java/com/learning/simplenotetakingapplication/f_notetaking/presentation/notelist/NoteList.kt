@@ -35,7 +35,11 @@ fun ListNotes(viewModel: NoteListViewModel, modifier: Modifier = Modifier) {
     val state by viewModel.state.collectAsState()
 
     ListNotes(state = state, onEvent = viewModel::onEvent, modifier = modifier)
-    NewNote(showDialog = state.showNewNotePopup, state.newNoteContent, onEvent = viewModel::onEvent)
+    NoteDialogWindow(
+        showDialog = state.showNoteDialog,
+        savedContent = state.newNoteContent,
+        onEvent = viewModel::onEvent
+    )
 }
 
 // Stateless
@@ -49,7 +53,7 @@ fun ListNotes(
         floatingActionButton = {
             SmallFloatingActionButton(
                 modifier = Modifier.padding(5.dp),
-                onClick = { onEvent(NoteListEvent.ShowNewNoteDialog) }) {
+                onClick = { onEvent(NoteListEvent.ShowNoteDialog) }) {
                 Icon(Icons.Filled.Add, "New Note Button")
             }
         },
@@ -69,7 +73,10 @@ fun ListNotes(
                     .padding(5.dp)
             ) {
                 items(state.notes) { note ->
-                    Note(content = note.content, onClick = {})
+                    Note(content = note.content, onClick = {
+                        onEvent(NoteListEvent.SetNote(note = note))
+                        onEvent(NoteListEvent.ShowNoteDialog)
+                    })
                 }
             }
         }

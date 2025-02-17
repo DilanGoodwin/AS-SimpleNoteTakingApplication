@@ -12,4 +12,4 @@ import androidx.room.PrimaryKey
  * @param uid Unique identifier for the note
  */
 @Entity
-data class Note(val content: String = "", @PrimaryKey(autoGenerate = true) val uid: Int = 0)
+data class Note(var content: String = "", @PrimaryKey(autoGenerate = true) val uid: Int? = null)
