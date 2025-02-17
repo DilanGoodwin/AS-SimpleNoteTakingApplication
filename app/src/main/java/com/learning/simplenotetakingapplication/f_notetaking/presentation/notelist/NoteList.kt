@@ -34,11 +34,15 @@ import com.learning.simplenotetakingapplication.core.presentation.ViewingSystemT
 fun ListNotes(viewModel: NoteListViewModel, modifier: Modifier = Modifier) {
     val state by viewModel.state.collectAsState()
 
-    ListNotes(state = state, onEvent = viewModel::onEvent, modifier = modifier)
     NoteDialogWindow(
         showDialog = state.showNoteDialog,
         savedContent = state.newNoteContent,
         onEvent = viewModel::onEvent
+    )
+    ListNotes(
+        state = state,
+        onEvent = viewModel::onEvent,
+        modifier = modifier
     )
 }
 
@@ -53,7 +57,9 @@ fun ListNotes(
         floatingActionButton = {
             SmallFloatingActionButton(
                 modifier = Modifier.padding(5.dp),
-                onClick = { onEvent(NoteListEvent.ShowNoteDialog) }) {
+                onClick = {
+                    onEvent(NoteListEvent.ShowNoteDialog)
+                }) {
                 Icon(Icons.Filled.Add, "New Note Button")
             }
         },
@@ -86,6 +92,8 @@ fun ListNotes(
 // Stateless
 @Composable
 fun Note(content: String, onClick: () -> Unit) {
+    val lineLength = 3
+
     Box(
         modifier = Modifier
             .padding(5.dp)
@@ -93,7 +101,12 @@ fun Note(content: String, onClick: () -> Unit) {
             .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(5.dp))
             .clickable(onClick = onClick)
     ) {
-        Text(content, maxLines = 3, modifier = Modifier.padding(5.dp))
+        Text(
+            content,
+            minLines = lineLength,
+            maxLines = lineLength,
+            modifier = Modifier.padding(5.dp)
+        )
     }
 }
 
