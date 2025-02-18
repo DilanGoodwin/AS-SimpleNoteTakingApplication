@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -53,10 +54,13 @@ fun NoteDialogWindow(
                         Icon(
                             imageVector = Icons.Filled.Close,
                             contentDescription = "",
-                            modifier = Modifier.clickable {
-                                onEvent(NoteListEvent.SaveNote)
-                                onEvent(NoteListEvent.HideNoteDialog)
-                            })
+                            modifier = Modifier
+                                .clickable {
+                                    onEvent(NoteListEvent.SaveNote)
+                                    onEvent(NoteListEvent.HideNoteDialog)
+                                }
+                                .testTag(tag = TestTagCloseDialog)
+                        )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     TextField(
@@ -64,6 +68,7 @@ fun NoteDialogWindow(
                         onValueChange = { onEvent(NoteListEvent.SetContent(content = it)) },
                         modifier = Modifier
                             .fillMaxWidth()
+                            .testTag(tag = TestTagSelectDialogTextField)
                     )
                 }
             }
