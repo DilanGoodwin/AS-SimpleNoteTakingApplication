@@ -71,4 +71,7 @@ dependencies {
     implementation(libs.androidx.glance.preview)
     implementation(libs.androidx.glance.appwidget.preview)
     implementation(libs.androidx.glance.appwidget)
+
+    // Coroutines Testing
+    testImplementation(libs.kotlinx.coroutines.test)
 }
