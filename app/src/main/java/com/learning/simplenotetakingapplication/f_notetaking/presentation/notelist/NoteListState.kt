@@ -7,7 +7,7 @@ data class NoteListState(
     val notes: List<Note> = emptyList(),
     val currentNote: Note = Note(),
     val newNoteContent: String = "",
-    val sortType: SortType = SortType.CONTENT,
+    val sortType: SortType = SortType.ID,
     val showNoteDialog: Boolean = false,
     val showDropDownMenu: Boolean = false
 )

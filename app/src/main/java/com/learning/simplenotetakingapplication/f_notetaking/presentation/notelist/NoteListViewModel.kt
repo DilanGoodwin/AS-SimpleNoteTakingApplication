@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.learning.simplenotetakingapplication.f_notetaking.domain.model.Note
 import com.learning.simplenotetakingapplication.f_notetaking.domain.use_case.NoteUseCases
-import com.learning.simplenotetakingapplication.f_notetaking.domain.util.SortType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -21,7 +20,7 @@ import kotlinx.coroutines.launch
  */
 class NoteListViewModel(private val noteUseCases: NoteUseCases) : ViewModel() {
     private val _state = MutableStateFlow(NoteListState())
-    private val _sortType = MutableStateFlow(SortType.CONTENT)
+    private val _sortType = MutableStateFlow(_state.value.sortType)
     private val _notes =
         _sortType.flatMapLatest { sortType -> noteUseCases.getNotes(sortType = sortType) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())

@@ -19,9 +19,10 @@ class GetNotes(private val repository: NoteRepository) {
      * @param sortType the ordering the notes should be formatted to. By default set to content
      * @return All notes from the database
      */
-    operator fun invoke(sortType: SortType = SortType.CONTENT): Flow<List<Note>> {
+    operator fun invoke(sortType: SortType = SortType.ID): Flow<List<Note>> {
         return repository.getNotes().map { notes ->
             when (sortType) {
+                SortType.ID -> notes.sortedBy { it.uid }
                 SortType.CONTENT -> notes.sortedBy { it.content.lowercase() }
                 SortType.TIMESTAMP -> notes.sortedBy { it.timeStamp }
             }
