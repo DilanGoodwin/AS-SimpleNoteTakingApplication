@@ -18,7 +18,13 @@ class NoteRepositoryUiTestingImplementation(notes: List<Note>) : NoteRepository 
     override suspend fun upsertNote(note: Note) {
         if (note.uid == null) {
             val currentList = _noteList.value.toMutableList()
-            currentList.add(note)
+            currentList.add(
+                Note(
+                    content = note.content,
+                    timeStamp = System.currentTimeMillis(),
+                    uid = currentList.size
+                )
+            )
             _noteList.value = currentList.toList()
         }
     }

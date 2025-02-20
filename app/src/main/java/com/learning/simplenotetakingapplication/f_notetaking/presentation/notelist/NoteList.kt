@@ -82,7 +82,10 @@ fun ListNotes(
             )
 
             Box {
-                IconButton(onClick = { onEvent(NoteListEvent.ShowOrderDropDownMenu) }) {
+                IconButton(
+                    onClick = { onEvent(NoteListEvent.ShowOrderDropDownMenu) },
+                    modifier = Modifier.testTag(TestTagChangeSortType)
+                ) {
                     Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
                 }
             }
@@ -92,6 +95,7 @@ fun ListNotes(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(5.dp)
+                    .testTag(TestTagNotesListColumns)
             ) {
                 items(state.notes) { note ->
                     Note(content = note.content, onClick = {

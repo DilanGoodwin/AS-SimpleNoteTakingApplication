@@ -1,8 +1,10 @@
 package com.learning.simplenotetakingapplication.f_notetaking.presentation
 
 import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -14,10 +16,13 @@ import com.learning.simplenotetakingapplication.f_notetaking.domain.repository.N
 import com.learning.simplenotetakingapplication.f_notetaking.domain.use_case.GetNotes
 import com.learning.simplenotetakingapplication.f_notetaking.domain.use_case.NoteUseCases
 import com.learning.simplenotetakingapplication.f_notetaking.domain.use_case.UpsertNote
+import com.learning.simplenotetakingapplication.f_notetaking.domain.util.SortType
 import com.learning.simplenotetakingapplication.f_notetaking.presentation.notelist.ListNotes
 import com.learning.simplenotetakingapplication.f_notetaking.presentation.notelist.NoteListViewModel
+import com.learning.simplenotetakingapplication.f_notetaking.presentation.notelist.TestTagChangeSortType
 import com.learning.simplenotetakingapplication.f_notetaking.presentation.notelist.TestTagCloseDialog
 import com.learning.simplenotetakingapplication.f_notetaking.presentation.notelist.TestTagNewNote
+import com.learning.simplenotetakingapplication.f_notetaking.presentation.notelist.TestTagNotesListColumns
 import com.learning.simplenotetakingapplication.f_notetaking.presentation.notelist.TestTagSelectDialogTextField
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -28,9 +33,9 @@ class NoteListUITesting {
 
     private lateinit var noteUseCases: NoteUseCases
     private val notes: List<Note> = listOf(
-        Note(content = "Note1", uid = 0),
-        Note(content = "Note2", uid = 1),
-        Note(content = "Note3", uid = 2)
+        Note(content = "Note1", timeStamp = 1740056347421, uid = 0),
+        Note(content = "Note2", timeStamp = 1740056372073, uid = 1),
+        Note(content = "Note3", timeStamp = 1740056372073, uid = 2)
     )
 
     @get:Rule
@@ -43,14 +48,18 @@ class NoteListUITesting {
         composeTestRule.onNodeWithTag(testTag = TestTagCloseDialog).performClick()
     }
 
+    private fun changeSortType(sortType: SortType) {
+        composeTestRule.onNodeWithTag(testTag = TestTagChangeSortType).performClick()
+        composeTestRule.onNodeWithText(text = sortType.toString().lowercase()).performClick()
+    }
+
     @Before
     fun beforeTests() {
         val noteRepo: NoteRepository = NoteRepositoryUiTestingImplementation(notes = notes)
-        noteUseCases =
-            NoteUseCases(
-                getNotes = GetNotes(repository = noteRepo),
-                upsertNote = UpsertNote(repository = noteRepo)
-            )
+        noteUseCases = NoteUseCases(
+            getNotes = GetNotes(repository = noteRepo),
+            upsertNote = UpsertNote(repository = noteRepo)
+        )
         composeTestRule.setContent { ListNotes(NoteListViewModel(noteUseCases = noteUseCases)) }
     }
 
@@ -123,5 +132,35 @@ class NoteListUITesting {
             .performTextInput(text = changedNoteText)
         composeTestRule.onNodeWithTag(testTag = TestTagCloseDialog).performClick()
         composeTestRule.onNodeWithText(text = changedNoteText).assertExists()
+    }
+
+    @Test
+    fun checkSortingNotesContent() {
+        changeSortType(SortType.CONTENT)
+
+        val sortedNotes = notes.sortedBy { it.content }
+
+        for (i in sortedNotes.indices) {
+            composeTestRule.onNodeWithTag(testTag = TestTagNotesListColumns).onChildAt(index = i)
+                .assertTextContains(value = sortedNotes[i].content)
+        }
+    }
+
+    @Test
+    fun checkSortingNotesTimeStamp() {
+        changeSortType(SortType.TIMESTAMP)
+
+        val sortedNotes = notes.sortedBy { it.timeStamp }
+        
+        for (i in sortedNotes.indices) {
+            composeTestRule.onNodeWithTag(testTag = TestTagNotesListColumns).onChildAt(index = i)
+                .assertTextContains(value = sortedNotes[i].content)
+        }
+    }
+
+    @Test
+    fun checkChangingSortingNotes() {
+        checkSortingNotesTimeStamp()
+        checkSortingNotesContent()
     }
 }
