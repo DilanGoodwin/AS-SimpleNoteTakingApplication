@@ -1,11 +1,19 @@
 # NoteTaking
 Simple Android note taking application, intuative and easy to use interface.
 
+<img src="img/NotesApplicationNoNotes.png" width=30% height=30%>
+
 ## Adding Notes
 FAB (Floating Action Button) on main screen allows for the creation of new notes within the application.
 
+<img src="img/NotesApplicationAddingNewNote.png" width=30% height=30%>
+<img src="img/NotesApplicationViewingNotes.png" width=30% height=30%>
+
 ## Editing Notes
 On click handler for the note view creates dialog window for editing previous note content within the view.
+
+<img src="img/NotesApplicationEditingNotes.png" width=30% height=30%>
+<img src="img/NotesApplicationEditiedNote.png" width=30% height=30%>
 
 # ToDos
 
