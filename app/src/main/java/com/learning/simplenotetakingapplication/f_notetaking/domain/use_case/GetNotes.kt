@@ -2,21 +2,29 @@ package com.learning.simplenotetakingapplication.f_notetaking.domain.use_case
 
 import com.learning.simplenotetakingapplication.f_notetaking.domain.model.Note
 import com.learning.simplenotetakingapplication.f_notetaking.domain.repository.NoteRepository
+import com.learning.simplenotetakingapplication.f_notetaking.domain.util.SortType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * GetNotes
  * @param repository Access object for the note repository
  */
-class GetNotes(private val repository:NoteRepository){
+class GetNotes(private val repository: NoteRepository) {
     /**
      * invoke
      *
      * On class call run this function
      *
+     * @param sortType the ordering the notes should be formatted to. By default set to content
      * @return All notes from the database
      */
-    operator fun invoke(): Flow<List<Note>>{
-        return repository.getNotes()
+    operator fun invoke(sortType: SortType): Flow<List<Note>> {
+        return repository.getNotes().map { notes ->
+            when (sortType) {
+                SortType.CONTENT -> notes.sortedBy { it.content.lowercase() }
+                SortType.TIMESTAMP -> notes.sortedBy { it.timeStamp }
+            }
+        }
     }
 }

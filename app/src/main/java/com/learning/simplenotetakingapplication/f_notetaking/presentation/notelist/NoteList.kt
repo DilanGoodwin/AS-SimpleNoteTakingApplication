@@ -12,7 +12,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
@@ -29,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.learning.simplenotetakingapplication.R
 import com.learning.simplenotetakingapplication.core.presentation.ViewingSystemThemes
+import com.learning.simplenotetakingapplication.f_notetaking.domain.util.SortType
 
 // Stateful
 @Composable
@@ -45,6 +50,7 @@ fun ListNotes(viewModel: NoteListViewModel, modifier: Modifier = Modifier) {
         onEvent = viewModel::onEvent,
         modifier = modifier
     )
+    OrderDropDownMenu(state = state, onEvent = viewModel::onEvent)
 }
 
 // Stateless
@@ -74,6 +80,13 @@ fun ListNotes(
                 fontSize = 20.sp,
                 modifier = modifier.align(Alignment.CenterHorizontally)
             )
+
+            Box {
+                IconButton(onClick = { onEvent(NoteListEvent.ShowOrderDropDownMenu) }) {
+                    Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
+                }
+            }
+
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
@@ -86,6 +99,22 @@ fun ListNotes(
                         onEvent(NoteListEvent.ShowNoteDialog)
                     })
                 }
+            }
+        }
+    }
+}
+
+// Stateless
+@Composable
+fun OrderDropDownMenu(state: NoteListState, onEvent: (NoteListEvent) -> Unit) {
+    Box {
+        DropdownMenu(
+            expanded = state.showDropDownMenu,
+            onDismissRequest = { onEvent(NoteListEvent.HideOrderDropDownMenu) }) {
+            for (type in SortType.entries) {
+                DropdownMenuItem(
+                    text = { Text(text = type.toString().lowercase()) },
+                    onClick = { onEvent(NoteListEvent.UpdateSortType(sortType = type)) })
             }
         }
     }
