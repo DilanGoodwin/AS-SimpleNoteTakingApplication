@@ -43,13 +43,19 @@ class NoteUseCasesTest {
     }
 
     private fun addingItems(newNote: Note): List<Note> {
-        return (notes + newNote).sortedBy { it.content }
+        return (notes + newNote).sortedBy { it.uid }
     }
 
     @Test
     fun gettingNotes() = runTest {
         val listNotes = flattenNotesFlowToList(noteUseCases.getNotes())
         assertEquals("", notes, listNotes)
+    }
+
+    @Test
+    fun gettingNotesOrderedId() = runTest {
+        val listNotes = flattenNotesFlowToList(noteUseCases.getNotes(sortType = SortType.ID))
+        assertEquals("", notes.sortedBy { it.uid }, listNotes)
     }
 
     @Test
