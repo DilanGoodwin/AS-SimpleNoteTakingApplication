@@ -50,7 +50,6 @@ fun ListNotes(viewModel: NoteListViewModel, modifier: Modifier = Modifier) {
         onEvent = viewModel::onEvent,
         modifier = modifier
     )
-    OrderDropDownMenu(state = state, onEvent = viewModel::onEvent)
 }
 
 // Stateless
@@ -87,6 +86,7 @@ fun ListNotes(
                     modifier = Modifier.testTag(TestTagChangeSortType)
                 ) {
                     Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
+                    OrderDropDownMenu(state = state, onEvent = onEvent)
                 }
             }
 
