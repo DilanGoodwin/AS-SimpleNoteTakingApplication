@@ -48,6 +48,15 @@ class NoteListUITesting {
         composeTestRule.onNodeWithTag(testTag = TestTagCloseDialog).performClick()
     }
 
+    private fun editNote(originalContent: String, newContent: String) {
+        composeTestRule.onNodeWithText(text = originalContent).performClick()
+        composeTestRule.onNodeWithTag(testTag = TestTagSelectDialogTextField).performClick()
+            .performTextClearance()
+        composeTestRule.onNodeWithTag(testTag = TestTagSelectDialogTextField).performClick()
+            .performTextInput(text = newContent)
+        composeTestRule.onNodeWithTag(testTag = TestTagCloseDialog).performClick()
+    }
+
     private fun changeSortType(sortType: SortType) {
         composeTestRule.onNodeWithTag(testTag = TestTagChangeSortType).performClick()
         composeTestRule.onNodeWithText(text = sortType.toString().lowercase()).performClick()
@@ -124,13 +133,8 @@ class NoteListUITesting {
     @Test
     fun editNote() = runTest {
         val changedNoteText = "Something"
+        editNote(originalContent = "Node1", newContent = changedNoteText)
 
-        composeTestRule.onNodeWithText("Note1").performClick()
-        composeTestRule.onNodeWithTag(testTag = TestTagSelectDialogTextField).performClick()
-            .performTextClearance()
-        composeTestRule.onNodeWithTag(testTag = TestTagSelectDialogTextField).performClick()
-            .performTextInput(text = changedNoteText)
-        composeTestRule.onNodeWithTag(testTag = TestTagCloseDialog).performClick()
         composeTestRule.onNodeWithText(text = changedNoteText).assertExists()
     }
 
@@ -147,7 +151,7 @@ class NoteListUITesting {
     }
 
     @Test
-    fun checkSortingNotesTimeStamp() {
+    fun checkSortingNotesCreationTime() {
         changeSortType(SortType.CREATION_TIME)
 
         val sortedNotes = notes.sortedBy { it.creationTime }
@@ -159,8 +163,21 @@ class NoteListUITesting {
     }
 
     @Test
+    fun checkSortingNotesUpdatedTime() {
+        changeSortType(SortType.UPDATED_TIME)
+        
+        val sortedNotes = notes.sortedBy { it.updatedTime }
+
+        for (i in sortedNotes.indices) {
+            composeTestRule.onNodeWithTag(testTag = TestTagNotesListColumns).onChildAt(index = i)
+                .assertTextContains(value = sortedNotes[i].content)
+        }
+    }
+
+    @Test
     fun checkChangingSortingNotes() {
-        checkSortingNotesTimeStamp()
+        checkSortingNotesCreationTime()
+        checkSortingNotesUpdatedTime()
         checkSortingNotesContent()
     }
 }
