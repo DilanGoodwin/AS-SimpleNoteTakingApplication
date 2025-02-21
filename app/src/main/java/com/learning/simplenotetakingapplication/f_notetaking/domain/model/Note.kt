@@ -15,5 +15,6 @@ import androidx.room.PrimaryKey
 data class Note(
     var content: String = "",
     var creationTime: Long = 0,
+    var updatedTime: Long = 0,
     @PrimaryKey(autoGenerate = true) val uid: Int? = null
 )

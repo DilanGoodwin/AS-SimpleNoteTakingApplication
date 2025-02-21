@@ -42,6 +42,11 @@ class NoteListViewModel(private val noteUseCases: NoteUseCases) : ViewModel() {
             is NoteListEvent.UpdateSortType -> _sortType.value = event.sortType
             NoteListEvent.SaveNote -> {
                 if (_state.value.newNoteContent.isBlank()) return
+                if (_state.value.currentNote.creationTime == 0.toLong()) {
+                    _state.value.currentNote.creationTime = System.currentTimeMillis()
+                }
+
+                _state.value.currentNote.updatedTime = System.currentTimeMillis()
                 _state.value.currentNote.content = _state.value.newNoteContent
                 viewModelScope.launch { noteUseCases.upsertNote(_state.value.currentNote) }
                 onEvent(NoteListEvent.SetNote(note = Note()))
