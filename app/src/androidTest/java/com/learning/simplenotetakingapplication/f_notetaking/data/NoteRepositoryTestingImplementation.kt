@@ -21,7 +21,7 @@ class NoteRepositoryUiTestingImplementation(notes: List<Note>) : NoteRepository 
             currentList.add(
                 Note(
                     content = note.content,
-                    timeStamp = System.currentTimeMillis(),
+                    creationTime = System.currentTimeMillis(),
                     uid = currentList.size
                 )
             )

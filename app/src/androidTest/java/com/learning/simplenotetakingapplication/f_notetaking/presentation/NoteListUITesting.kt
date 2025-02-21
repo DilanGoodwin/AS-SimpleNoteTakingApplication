@@ -33,9 +33,9 @@ class NoteListUITesting {
 
     private lateinit var noteUseCases: NoteUseCases
     private val notes: List<Note> = listOf(
-        Note(content = "Note1", timeStamp = 1740056347421, uid = 0),
-        Note(content = "Note2", timeStamp = 1740056372073, uid = 1),
-        Note(content = "Note3", timeStamp = 1740056372073, uid = 2)
+        Note(content = "Note1", creationTime = 1740056347421, uid = 0),
+        Note(content = "Note2", creationTime = 1740056372073, uid = 1),
+        Note(content = "Note3", creationTime = 1740056372073, uid = 2)
     )
 
     @get:Rule
@@ -148,10 +148,10 @@ class NoteListUITesting {
 
     @Test
     fun checkSortingNotesTimeStamp() {
-        changeSortType(SortType.TIMESTAMP)
+        changeSortType(SortType.CREATION_TIME)
 
-        val sortedNotes = notes.sortedBy { it.timeStamp }
-        
+        val sortedNotes = notes.sortedBy { it.creationTime }
+
         for (i in sortedNotes.indices) {
             composeTestRule.onNodeWithTag(testTag = TestTagNotesListColumns).onChildAt(index = i)
                 .assertTextContains(value = sortedNotes[i].content)

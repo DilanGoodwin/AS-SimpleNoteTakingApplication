@@ -66,8 +66,9 @@ class NoteUseCasesTest {
 
     @Test
     fun gettingNotesOrderedTimeStamp() = runTest {
-        val listNotes = flattenNotesFlowToList(noteUseCases.getNotes(sortType = SortType.TIMESTAMP))
-        assertEquals("", notes.sortedBy { it.timeStamp }, listNotes)
+        val listNotes =
+            flattenNotesFlowToList(noteUseCases.getNotes(sortType = SortType.CREATION_TIME))
+        assertEquals("", notes.sortedBy { it.creationTime }, listNotes)
     }
 
     @Test

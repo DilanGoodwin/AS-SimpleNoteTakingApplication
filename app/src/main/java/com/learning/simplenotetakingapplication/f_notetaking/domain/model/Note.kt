@@ -14,6 +14,6 @@ import androidx.room.PrimaryKey
 @Entity
 data class Note(
     var content: String = "",
-    var timeStamp: Long = 0,
+    var creationTime: Long = 0,
     @PrimaryKey(autoGenerate = true) val uid: Int? = null
 )

@@ -43,7 +43,6 @@ class NoteListViewModel(private val noteUseCases: NoteUseCases) : ViewModel() {
             NoteListEvent.SaveNote -> {
                 if (_state.value.newNoteContent.isBlank()) return
                 _state.value.currentNote.content = _state.value.newNoteContent
-                _state.value.currentNote.timeStamp = System.currentTimeMillis()
                 viewModelScope.launch { noteUseCases.upsertNote(_state.value.currentNote) }
                 onEvent(NoteListEvent.SetNote(note = Note()))
             }
