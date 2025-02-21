@@ -22,8 +22,8 @@ On click handler for the note view creates dialog window for editing previous no
 # ToDos
 
 ## Main Application
-- [ ] Sorting notes based on creation time
-- [ ] Sorting notes based on last edited time
+- [x] Sorting notes based on creation time
+- [x] Sorting notes based on last edited time
 - [ ] Deleting notes
 - [ ] Viewing deleted notes
 - [ ] Restoring deleted notes

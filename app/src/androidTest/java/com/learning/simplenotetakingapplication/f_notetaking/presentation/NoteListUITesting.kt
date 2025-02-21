@@ -33,9 +33,9 @@ class NoteListUITesting {
 
     private lateinit var noteUseCases: NoteUseCases
     private val notes: List<Note> = listOf(
-        Note(content = "Note1", timeStamp = 1740056347421, uid = 0),
-        Note(content = "Note2", timeStamp = 1740056372073, uid = 1),
-        Note(content = "Note3", timeStamp = 1740056372073, uid = 2)
+        Note(content = "Note1", creationTime = 1740056347421, uid = 0),
+        Note(content = "Note2", creationTime = 1740056372073, uid = 1),
+        Note(content = "Note3", creationTime = 1740056372073, uid = 2)
     )
 
     @get:Rule
@@ -45,6 +45,15 @@ class NoteListUITesting {
         composeTestRule.onNodeWithTag(testTag = TestTagNewNote).performClick()
         composeTestRule.onNodeWithTag(testTag = TestTagSelectDialogTextField).performClick()
             .performTextInput(text = content)
+        composeTestRule.onNodeWithTag(testTag = TestTagCloseDialog).performClick()
+    }
+
+    private fun editNote(originalContent: String, newContent: String) {
+        composeTestRule.onNodeWithText(text = originalContent).performClick()
+        composeTestRule.onNodeWithTag(testTag = TestTagSelectDialogTextField).performClick()
+            .performTextClearance()
+        composeTestRule.onNodeWithTag(testTag = TestTagSelectDialogTextField).performClick()
+            .performTextInput(text = newContent)
         composeTestRule.onNodeWithTag(testTag = TestTagCloseDialog).performClick()
     }
 
@@ -124,13 +133,8 @@ class NoteListUITesting {
     @Test
     fun editNote() = runTest {
         val changedNoteText = "Something"
+        editNote(originalContent = "Node1", newContent = changedNoteText)
 
-        composeTestRule.onNodeWithText("Note1").performClick()
-        composeTestRule.onNodeWithTag(testTag = TestTagSelectDialogTextField).performClick()
-            .performTextClearance()
-        composeTestRule.onNodeWithTag(testTag = TestTagSelectDialogTextField).performClick()
-            .performTextInput(text = changedNoteText)
-        composeTestRule.onNodeWithTag(testTag = TestTagCloseDialog).performClick()
         composeTestRule.onNodeWithText(text = changedNoteText).assertExists()
     }
 
@@ -147,11 +151,23 @@ class NoteListUITesting {
     }
 
     @Test
-    fun checkSortingNotesTimeStamp() {
-        changeSortType(SortType.TIMESTAMP)
+    fun checkSortingNotesCreationTime() {
+        changeSortType(SortType.CREATION_TIME)
 
-        val sortedNotes = notes.sortedBy { it.timeStamp }
+        val sortedNotes = notes.sortedBy { it.creationTime }
+
+        for (i in sortedNotes.indices) {
+            composeTestRule.onNodeWithTag(testTag = TestTagNotesListColumns).onChildAt(index = i)
+                .assertTextContains(value = sortedNotes[i].content)
+        }
+    }
+
+    @Test
+    fun checkSortingNotesUpdatedTime() {
+        changeSortType(SortType.UPDATED_TIME)
         
+        val sortedNotes = notes.sortedBy { it.updatedTime }
+
         for (i in sortedNotes.indices) {
             composeTestRule.onNodeWithTag(testTag = TestTagNotesListColumns).onChildAt(index = i)
                 .assertTextContains(value = sortedNotes[i].content)
@@ -160,7 +176,8 @@ class NoteListUITesting {
 
     @Test
     fun checkChangingSortingNotes() {
-        checkSortingNotesTimeStamp()
+        checkSortingNotesCreationTime()
+        checkSortingNotesUpdatedTime()
         checkSortingNotesContent()
     }
 }

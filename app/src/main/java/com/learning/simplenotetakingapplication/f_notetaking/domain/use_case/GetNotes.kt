@@ -24,7 +24,8 @@ class GetNotes(private val repository: NoteRepository) {
             when (sortType) {
                 SortType.ID -> notes.sortedBy { it.uid }
                 SortType.CONTENT -> notes.sortedBy { it.content.lowercase() }
-                SortType.TIMESTAMP -> notes.sortedBy { it.timeStamp }
+                SortType.CREATION_TIME -> notes.sortedBy { it.creationTime }
+                SortType.UPDATED_TIME -> notes.sortedBy { it.updatedTime }
             }
         }
     }
